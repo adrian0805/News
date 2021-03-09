@@ -27,25 +27,33 @@ struct NewsList: View {
                         TabsView(selected: $viewModel.selectedTab)
                             .padding(.horizontal, 13)
                     }
-                    ScrollView {
-                        LazyVStack(spacing: 15) {
-                            ForEach(articles.indices, id: \.self) { index in
-                                NavigationLink(destination: DetailsNewsView(article: articles[index])) {
-                                    NewsCell(article: articles[index])
-                                        .onAppear {
-                                            checkActionForLastCell(index: index)
-                                        }
-                                }.buttonStyle(FlatLinkStyle())
-                                
-                            }
-                        }
-                        .padding(.horizontal, 8)
-                    }
+                    ScrollableNewsListView(articles: articles, checkLastCellAction: checkActionForLastCell)
+//                    ScrollView {
+//                        ScrollViewReader { reader in
+//                            LazyVStack(spacing: 15) {
+//                                ForEach(articles.indices, id: \.self) { index in
+//                                    NavigationLink(destination: DetailsNewsView(article: articles[index])) {
+//                                        NewsCell(article: articles[index])
+//                                            .onAppear {
+//                                                checkActionForLastCell(index: index)
+//                                            }
+//                                    }.buttonStyle(FlatLinkStyle())
+//
+//                                }
+//                            }.animation(nil)
+//                            .padding(.horizontal, 8)
+//                            .onReceive(viewModel.$scrollTop) { (scrollToTop) in
+//                                guard let first = articles.first, scrollToTop else { return}
+//                                reader.scrollTo(first, anchor: .top)
+//                                print(scrollToTop)
+//                            }
+//                        }
+//                    }
                 }
                 .background(Color.background.edgesIgnoringSafeArea(.all))
                 .navigationBarHidden(true)
                 .onAppear {
-                    viewModel.getNews()
+                    //viewModel.getNews()
                 }
             }
         }
@@ -53,11 +61,11 @@ struct NewsList: View {
     
     var articles: [Article] {
         guard viewModel.searchedArticles.isEmpty || viewModel.searchText.count < 3 else { return viewModel.searchedArticles}
-        return viewModel.articles
+        return viewModel.tabsArticles[viewModel.selectedTab] ?? []
     }
     
     func checkActionForLastCell(index: Int) {
-        if index == articles.count - 1, viewModel.hasMoreNews {
+        if index == articles.count - 1 {
             viewModel.getNextPageNews(isPaging: true)
         }
     }
@@ -80,10 +88,6 @@ struct NewsCell: View {
                         .foregroundColor(.gray)
                 }
                 Spacer()
-                Image(systemName: "bookmark")
-                    .resizable()
-                    .frame(width: 11, height: 15, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                    .foregroundColor(.blue)
             }
             .frame(maxWidth: .infinity)
             Text(article.title ?? "")
@@ -110,6 +114,29 @@ struct NewsCell: View {
     }
 }
 
+struct ScrollableNewsListView: View {
+    var articles: [Article]
+    var checkLastCellAction: (Int) -> Void
+    var body: some View {
+        ScrollView {
+            ScrollViewReader { reader in
+                LazyVStack(spacing: 15) {
+                    ForEach(articles.indices, id: \.self) { index in
+                        NavigationLink(destination: DetailsNewsView(article: articles[index])) {
+                            NewsCell(article: articles[index])
+                                .onAppear {
+                                    checkLastCellAction(index)
+                                    //checkActionForLastCell(index: index)
+                                }
+                        }.buttonStyle(FlatLinkStyle())
+                        
+                    }
+                }.animation(nil)
+                .padding(.horizontal, 8)
+            }
+        }
+    }
+}
 
 struct TitleView: View {
     var title: String

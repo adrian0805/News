@@ -13,22 +13,10 @@ struct DetailsNewsView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Button(action: {
-                    presentationMode.wrappedValue.dismiss()
-                }, label: {
-                    Image(systemName: "chevron.backward")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .foregroundColor(Color(UIColor.label))
-                })
-                .frame(width: 8, height: 15)
-            }.frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 10)
-            ScrollView {
-                VStack(spacing: 10) {
-                    SourceView(article: article)
-                        .frame(height: 60)
+            VStack(spacing: 10) {
+                SourceView(article: article)
+                    .frame(height: 60)
+                ScrollView {
                     VStack {
                         URLImage(url: imageURL)
                             .frame(width: UIScreen.main.bounds.width - 20, height: UIScreen.main.bounds.width * 3 / 4, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
@@ -53,31 +41,29 @@ struct DetailsNewsView: View {
                             .font(.SFDisplayLightFont(with: 16))
                         
                         NavigationLink(
-                            destination: WebView(request: URLRequest(url: URL(string: article.url ?? "")!)),
+                            destination: WebViewContainer(article: article),
                             label: {
                                 Group {
                                     Text("Link: ")
                                         .font(.SFDisplayRegularFont(with: 14))
                                         .foregroundColor(Color(UIColor.label))
                                         +
-                                    Text(article.url ?? "")
+                                        Text(article.url ?? "")
                                         .underline()
                                         .font(.SFDisplayRegularFont(with: 14))
                                         .foregroundColor(.blue)
                                 }
                                 
-                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                .frame(maxWidth: .infinity, alignment: .leading)
                             })
                     }
-                    .padding(.horizontal, 10)
                     
                     
                 }
-                //        .ignoresSafeArea()
-                
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                 .navigationBarHidden(true)
-            }
+            }.padding(.horizontal, 10)
+            
         }
         
         
@@ -88,20 +74,32 @@ struct DetailsNewsView: View {
 }
 
 struct SourceView: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     var article: Article
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(article.source?.name ?? "")
-                .font(.SFDisplayBoldFont(with: 32))
-                .padding(.leading, 10)
-            Text("By " + (article.author ?? "unkown author"))
-                .font(.SFDisplayRegularFont(with: 12))
-                .foregroundColor(.gray)
-                .padding(.leading, 10)
-            
-            Divider()
-                .foregroundColor(.gray)
-        }.frame(maxWidth: .infinity, maxHeight: .infinity)
-        
+        HStack( alignment: .top) {
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }, label: {
+                Image(systemName: "chevron.backward")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(Color(UIColor.label))
+                    .frame(width: 8, height: 15)
+            }).padding(.top, 13)
+            VStack(alignment: .leading) {
+                Text(article.source?.name ?? "")
+                    .font(.SFDisplayBoldFont(with: 32))
+                    .padding(.leading, 10)
+                Text("By " + (article.author ?? "unkown author"))
+                    .font(.SFDisplayRegularFont(with: 12))
+                    .foregroundColor(.gray)
+                    .padding(.leading, 10)
+                
+                Divider()
+                    .foregroundColor(.gray)
+            }.frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
     }
 }

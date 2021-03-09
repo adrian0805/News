@@ -7,8 +7,6 @@
 import Foundation
 import SwiftUI
 
-//var tabs = ["business", "entertainment","health", "science", "sports", "technology"]
-
 enum Tabs: String, CaseIterable{
     case general = "General"
     case business = "Business"
@@ -17,7 +15,6 @@ enum Tabs: String, CaseIterable{
     case science = "Science"
     case sports = "Sports"
     case technology = "Technology"
-
 }
 
 
@@ -28,20 +25,19 @@ struct TabsView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 15) {
                 ForEach(Tabs.allCases, id:\.self) { tab in
-                    TabButton(title: tab.rawValue, selected: $selected, animation: animation)
+                    TabButton(selected: $selected, title: tab.rawValue, animation: animation)
                     if Tabs.allCases.last != tab { Spacer(minLength: 0)}
                 }
             }
         }
         .clipped()
         .cornerRadius(22)
-        
     }
 }
 
 struct TabButton: View {
-    var title: String
     @Binding var selected: Tabs
+    var title: String
     var animation: Namespace.ID
     
     var body: some View {
@@ -65,7 +61,7 @@ struct TabButton: View {
                                 .matchedGeometryEffect(id: "Tab", in: animation)
                         }
                     }
-                    )
+                )
         }
         .disabled(selected.rawValue == title)
     }

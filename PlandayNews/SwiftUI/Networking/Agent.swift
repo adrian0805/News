@@ -43,16 +43,20 @@ enum NewsAPI {
     static let agent = NetworkAgent()
 //    static let baseURL = URL(string: "https://newsapi.org")!
     static let baseURLComponents = URLComponents(string: "https://newsapi.org")
-    static let APIKey = "8f48eb37348d4ac88f9f4c12d27607c8"
+    static let APIKey = "77bdfb46ad214c91b0bc16f459794095"
 }
 
 extension NewsAPI {
-    static func topHeadlines(country: String = "us", page: Int) -> AnyPublisher<News, Error> {
+    static func topHeadlines(country: String = "us", page: Int, category: String? = nil) -> AnyPublisher<News, Error> {
 //        var request = URLRequest(url: baseURL.appendingPathComponent("/v2/top-headlines")
 //        var urlComps = URLComponents(string: baseURL + "/v2/top-headlines")!
         var components = baseURLComponents
         components?.path = "/v2/top-headlines"
-        components?.queryItems = [ URLQueryItem(name: "country", value: country), URLQueryItem(name: "page", value: String(page)), URLQueryItem(name: "apiKey", value: APIKey)]
+        var queryItems = [ URLQueryItem(name: "country", value: country), URLQueryItem(name: "page", value: String(page)), URLQueryItem(name: "apiKey", value: APIKey)]
+        if let category = category {
+            queryItems.append(URLQueryItem(name: "category", value: category))
+        }
+        components?.queryItems = queryItems
         let request = URLRequest(url:(components?.url)!)
         return agent.run(request)
             .map(\.value)
@@ -75,7 +79,7 @@ struct News: Codable {
     let totalResults: Int
 }
 
-struct Article: Codable {
+struct Article: Codable, Hashable {
     let source: Source?
     let title: String?
     let author: String?
@@ -84,9 +88,13 @@ struct Article: Codable {
     let urlToImage: String?
     let publishedAt: Date?
     let content: String?
+    
+    static func == (lhs: Article, rhs: Article) -> Bool {
+        lhs.url == rhs.url
+    }
 }
 
-struct Source: Codable {
+struct Source: Codable, Hashable {
     let id: String?
     let name: String?
 }

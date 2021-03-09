@@ -16,6 +16,7 @@
 		0742C93125F034AB00035653 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0742C92F25F034AB00035653 /* LaunchScreen.storyboard */; };
 		0742C93B25F03A2E00035653 /* Agent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742C93A25F03A2E00035653 /* Agent.swift */; };
 		0742C94125F0532400035653 /* NewsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742C94025F0532400035653 /* NewsList.swift */; };
+		075A492D25F7F2E300F9A487 /* WebViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075A492C25F7F2E300F9A487 /* WebViewContainer.swift */; };
 		075A4B4125F05BA200144718 /* Font+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075A4B4025F05BA200144718 /* Font+Ext.swift */; };
 		075A4B5225F05F8C00144718 /* SF-Pro-Display-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 075A4B5125F05F8C00144718 /* SF-Pro-Display-Bold.otf */; };
 		075A4B5525F05F9700144718 /* SF-Pro-Display-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 075A4B5425F05F9700144718 /* SF-Pro-Display-Light.otf */; };
@@ -44,6 +45,7 @@
 		0742C93225F034AB00035653 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0742C93A25F03A2E00035653 /* Agent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agent.swift; sourceTree = "<group>"; };
 		0742C94025F0532400035653 /* NewsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsList.swift; sourceTree = "<group>"; };
+		075A492C25F7F2E300F9A487 /* WebViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewContainer.swift; sourceTree = "<group>"; };
 		075A4B4025F05BA200144718 /* Font+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Ext.swift"; sourceTree = "<group>"; };
 		075A4B5125F05F8C00144718 /* SF-Pro-Display-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Bold.otf"; sourceTree = "<group>"; };
 		075A4B5425F05F9700144718 /* SF-Pro-Display-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Light.otf"; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				07BBA59C25F5947200D15A17 /* DetailsNewsView.swift */,
+				075A492C25F7F2E300F9A487 /* WebViewContainer.swift */,
 			);
 			path = "News details";
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 				07BBA59D25F5947200D15A17 /* DetailsNewsView.swift in Sources */,
 				075A4B6425F0E8DD00144718 /* Color+Ext.swift in Sources */,
 				0742C94125F0532400035653 /* NewsList.swift in Sources */,
+				075A492D25F7F2E300F9A487 /* WebViewContainer.swift in Sources */,
 				075A4B6E25F1064C00144718 /* URLImage.swift in Sources */,
 				075A4B7525F1160D00144718 /* SearchView.swift in Sources */,
 				075A4B7825F1165500144718 /* AnyTransition.swift in Sources */,
