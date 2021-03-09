@@ -99,8 +99,6 @@ struct URLImage: View {
             case .initial:
                 EmptyView()
             case .inProgress:
-//                ProgressView()
-//                    .progressViewStyle(CircularProgressViewStyle(tint: .gray))
                 ActivityIndicator()
             case .success(let image):
                 image.resizable()

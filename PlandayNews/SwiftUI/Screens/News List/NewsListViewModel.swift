@@ -9,27 +9,22 @@ import Foundation
 import Combine
 
 class NewsListViewModel: ObservableObject {
-    @Published var news: News?
-    @Published var articles = [Article]()
     @Published var searchedArticles = [Article]()
-    @Published var searchText = ""
+    @Published var tabsArticles = [Tabs : [Article]] ()
     @Published var isSearching = false
+    @Published var searchText = ""
     @Published var selectedTab = Tabs.general
+    
     var searchPage: Int = 1
     var hasMoreNews = true
     var cancellables = Set<AnyCancellable>()
     var downloadedIndexes = Set<Int>()
     var tabsPageNumber = [Tabs:(Int, Bool)]()
-    @Published var tabsArticles = [Tabs : [Article]] ()
-    @Published var scrollTop = false
-
+    
     
     init() {
         setTabsPageNumber()
         subscribeToSearchText()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            self.scrollTop = true
-        }
     }
     
     func setTabsPageNumber() {
@@ -141,7 +136,7 @@ class NewsListViewModel: ObservableObject {
     }
     
     
-    private func checkNextPageData(articles: [Article]) {
+    internal func checkNextPageData(articles: [Article]) {
         if articles.count < 20 {
             if  isSearching && !searchText.isEmpty {
                 hasMoreNews = false
@@ -168,10 +163,8 @@ class NewsListViewModel: ObservableObject {
                     } else {
                         self.searchedArticles = news.articles
                     }
-                    
                 }
                 self.checkNextPageData(articles: news.articles)
-
             }.store(in: &cancellables)
     }
 }

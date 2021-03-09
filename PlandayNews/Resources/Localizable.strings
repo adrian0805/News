@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  PlandayNews
+
+  Created by Macarenco Adrian on 09.03.2021.
+  
+*/
+
+"news_list_search_news" = "Search for news";
+"news_list_news" = "News";
+"news_list_cancel" = "Cancel";
+"news_details_link" = "Link:";
+"news_details_unknown_author" = "Unknown author";
+"news_details_by" = "By";

@@ -18,7 +18,7 @@ struct SearchView: View {
                     .frame(width: 12, height: 12)
                     .foregroundColor(Color.seachColor)
                     .padding(.leading , 8)
-                TextField("Search for a news", text: $searchText)
+                TextField("news_list_search_news".localized, text: $searchText)
                     .accentColor(Color.seachColor)
                     .font(.system(size: 16))
                 if searchText != "" {
@@ -51,7 +51,7 @@ struct SearchView: View {
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                     
                 }, label: {
-                    Text("Cancel")
+                    Text("news_list_cancel".localized)
                 })
                 .transition(.bottomTrailing)
             }
