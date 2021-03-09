@@ -13,5 +13,9 @@ extension Color {
     static var darkGray: Color { Color("DarkGray")}
     static var searchBarBackground: Color { Color("SearchBarBackground")}
     static var seachColor: Color { Color("SearchColor")}
+    static var selectedTab: Color { Color("SelectedTab")}
+    static var deselectedTextColor: Color { Color("deselectedTabTextColor")}
+
+    
     static var orange: Color { return Color(red: 255/255, green: 121/255, blue: 0) }
 }

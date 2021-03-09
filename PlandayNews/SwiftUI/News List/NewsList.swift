@@ -23,6 +23,10 @@ struct NewsList: View {
                     }
                     SearchView(searchText: $viewModel.searchText, isSearching: $viewModel.isSearching)
                         .padding([.trailing, .leading, .bottom], 13)
+                    if !viewModel.isSearching {
+                        TabsView(selected: $viewModel.selectedTab)
+                            .padding(.horizontal, 13)
+                    }
                     ScrollView {
                         LazyVStack(spacing: 15) {
                             ForEach(articles.indices, id: \.self) { index in

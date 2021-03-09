@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		072A006725F77D7900D9A663 /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072A006625F77D7900D9A663 /* TabView.swift */; };
 		0742C92525F034A900035653 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742C92425F034A900035653 /* AppDelegate.swift */; };
 		0742C92725F034A900035653 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742C92625F034A900035653 /* SceneDelegate.swift */; };
 		0742C92925F034A900035653 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742C92825F034A900035653 /* ViewController.swift */; };
@@ -32,6 +33,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		072A006625F77D7900D9A663 /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
 		0742C92125F034A900035653 /* PlandayNews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlandayNews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0742C92425F034A900035653 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0742C92625F034A900035653 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,7 +93,6 @@
 				0742C93F25F0531100035653 /* SwiftUI */,
 				0742C92625F034A900035653 /* SceneDelegate.swift */,
 				0742C92425F034A900035653 /* AppDelegate.swift */,
-				0742C93925F034BE00035653 /* Networking */,
 				0742C92825F034A900035653 /* ViewController.swift */,
 				0742C92A25F034A900035653 /* Main.storyboard */,
 				0742C92D25F034AB00035653 /* Assets.xcassets */,
@@ -113,6 +114,7 @@
 		0742C93F25F0531100035653 /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				0742C93925F034BE00035653 /* Networking */,
 				075A4B6625F103A900144718 /* Custom Views */,
 				075A4B3F25F05B5F00144718 /* Extensions */,
 				0742C94425F0535000035653 /* News List */,
@@ -167,6 +169,7 @@
 				076FB5C925F6819B009326CC /* WebView.swift */,
 				075A4B5D25F0626E00144718 /* URLImage.swift */,
 				075A4B7425F1160D00144718 /* SearchView.swift */,
+				072A006625F77D7900D9A663 /* TabView.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 				075A4B7825F1165500144718 /* AnyTransition.swift in Sources */,
 				075A4B4125F05BA200144718 /* Font+Ext.swift in Sources */,
 				0742C93B25F03A2E00035653 /* Agent.swift in Sources */,
+				072A006725F77D7900D9A663 /* TabView.swift in Sources */,
 				075A4B7125F1078000144718 /* Date+Ext.swift in Sources */,
 				075A4B6925F103C300144718 /* ActivityIndicator.swift in Sources */,
 				0742C92525F034A900035653 /* AppDelegate.swift in Sources */,

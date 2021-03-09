@@ -14,6 +14,7 @@ class NewsListViewModel: ObservableObject {
     @Published var searchedArticles = [Article]()
     @Published var searchText = ""
     @Published var isSearching = false
+    @Published var selectedTab = Tabs.allCases[0]
     var page: Int = 1
     var searchPage: Int = 1
     var hasMoreNews = true
@@ -77,6 +78,13 @@ class NewsListViewModel: ObservableObject {
                     self.searchedArticles.removeAll()
                 }
                 self.hasMoreNews = true
+        }
+        .store(in: &cancellables)
+        
+        $selectedTab
+            .dropFirst()
+            .sink {selectedTab in
+                print(selectedTab)
         }
         .store(in: &cancellables)
     }
