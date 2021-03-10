@@ -11,7 +11,7 @@ import Combine
 enum NewsAPI {
     static let agent = NetworkAgent()
     static let baseURLComponents = URLComponents(string: "https://newsapi.org")
-    static let APIKey = "77bdfb46ad214c91b0bc16f459794095"
+    static let APIKey = "c67f34bdbf7744dda9ebd902c9853238"
 }
 
 extension NewsAPI {

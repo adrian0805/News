@@ -9,17 +9,21 @@ import SwiftUI
 
 struct DetailsNewsView: View {
     var article: Article
+    var category: String
     
     var body: some View {
         VStack {
             VStack(spacing: 10) {
                 SourceView(article: article)
                     .frame(height: 60)
-                    .padding(.top, 10)
-                ScrollableDetailsView(article: article)
+                    .padding([.top, .horizontal], 10)
+                Divider()
+                    .foregroundColor(.gray)
+                ScrollableDetailsView(article: article, category: category)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                    .padding(.horizontal, 10)
                 .navigationBarHidden(true)
-            }.padding(.horizontal, 10)
+            }
             
         }
     }
@@ -27,9 +31,10 @@ struct DetailsNewsView: View {
 
 private struct ScrollableDetailsView: View {
     var article: Article
+    var category: String
 
     var body: some View {
-        ScrollView {
+        ScrollView(/*@START_MENU_TOKEN@*/.vertical/*@END_MENU_TOKEN@*/, showsIndicators: false) {
             VStack {
                 URLImage(url: imageURL)
                     .frame(width: UIScreen.main.bounds.width - 20, height: UIScreen.main.bounds.width * 3 / 4, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
@@ -47,6 +52,7 @@ private struct ScrollableDetailsView: View {
                     .lineLimit(nil)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
                 urlView
+                    .padding(.top, 20)
             }
         }
     }
@@ -60,7 +66,7 @@ private struct ScrollableDetailsView: View {
             Text(timeString)
                 .font(.SFDisplayLightFont(with: 13))
             Spacer()
-            Text("Category")
+            Text(category)
                 .font(.SFDisplayRegularFont(with: 15))
                 .foregroundColor(.blue)
         }
@@ -72,12 +78,12 @@ private struct ScrollableDetailsView: View {
             label: {
                 Group {
                     Text("news_details_link".localized + " ")
-                        .font(.SFDisplayRegularFont(with: 14))
+                        .font(.SFDisplayRegularFont(with: 15))
                         .foregroundColor(Color(UIColor.label))
                         +
                         Text(articleUrl)
                         .underline()
-                        .font(.SFDisplayRegularFont(with: 14))
+                        .font(.SFDisplayRegularFont(with: 15))
                         .foregroundColor(.blue)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -128,10 +134,7 @@ struct SourceView: View {
                     .font(.SFDisplayRegularFont(with: 12))
                     .foregroundColor(.gray)
                     .padding(.leading, 10)
-                
-                Divider()
-                    .foregroundColor(.gray)
-            }.frame(maxWidth: .infinity, maxHeight: .infinity)
+            }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         }
     }
     

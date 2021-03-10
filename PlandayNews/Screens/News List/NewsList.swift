@@ -18,7 +18,7 @@ struct NewsList: View {
                     SearchView(searchText: $viewModel.searchText, isSearching: $viewModel.isSearching)
                         .padding([.trailing, .leading, .bottom], 13)
                     tabsView
-                    ScrollableNewsListView(articles: articles, checkLastCellAction: checkActionForLastCell)
+                    ScrollableNewsListView(articles: articles, category: viewModel.selectedTab.rawValue, checkLastCellAction: checkActionForLastCell)
                 }
                 .background(Color.background.edgesIgnoringSafeArea(.all))
                 .navigationBarHidden(true)
@@ -31,7 +31,7 @@ struct NewsList: View {
         }
     }
     
-    @ViewBuilder var titleView: some View {
+    @ViewBuilder private var titleView: some View {
         if !viewModel.isSearching {
             TitleView(title: "news_list_news".localized)
                 .frame(height: UIScreen.main.bounds.height / 11)
@@ -41,14 +41,14 @@ struct NewsList: View {
         }
     }
     
-    @ViewBuilder var tabsView: some View {
+    @ViewBuilder private var tabsView: some View {
         if !viewModel.isSearching {
             TabsView(selected: $viewModel.selectedTab)
                 .padding(.horizontal, 13)
         }
     }
     
-    @ViewBuilder var errorView: some View {
+    @ViewBuilder private var errorView: some View {
         if let error = viewModel.error {
             AlertView(title: "Oooopss, an error has occured", message: error.localizedDescription) {
                 viewModel.error = nil
@@ -57,27 +57,28 @@ struct NewsList: View {
     }
     
     
-    var articles: [Article] {
+    private var articles: [Article] {
         guard viewModel.searchedArticles.isEmpty || viewModel.searchText.count < 3 else { return viewModel.searchedArticles}
         return viewModel.tabsArticles[viewModel.selectedTab] ?? []
     }
     
-    func checkActionForLastCell(index: Int) {
+    private func checkActionForLastCell(index: Int) {
         if index == articles.count - 1 {
             viewModel.getNextPageNews(isPaging: true)
         }
     }
 }
 
-struct ScrollableNewsListView: View {
+private struct ScrollableNewsListView: View {
     var articles: [Article]
+    var category: String
     var checkLastCellAction: (Int) -> Void
     var body: some View {
         ScrollView {
             ScrollViewReader { reader in
                 LazyVStack(spacing: 15) {
                     ForEach(articles.indices, id: \.self) { index in
-                        NavigationLink(destination: DetailsNewsView(article: articles[index])) {
+                        NavigationLink(destination: DetailsNewsView(article: articles[index], category: category)) {
                             NewsCell(article: articles[index])
                                 .onAppear {
                                     checkLastCellAction(index)
@@ -93,7 +94,7 @@ struct ScrollableNewsListView: View {
     }
 }
 
-struct NewsCell: View {
+private struct NewsCell: View {
     var article: Article
     
     var body: some View {

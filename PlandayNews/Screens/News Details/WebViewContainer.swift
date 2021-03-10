@@ -15,6 +15,8 @@ struct WebViewContainer: View {
             SourceView(article: article)
                 .frame(height: 60)
                 .padding(.horizontal, 10)
+            Divider()
+                .foregroundColor(.gray)
             WebView(request: request)
         }.navigationBarHidden(true)
     }

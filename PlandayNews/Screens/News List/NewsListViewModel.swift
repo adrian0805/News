@@ -25,7 +25,7 @@ class NewsListViewModel: ObservableObject {
     
     init() {
         setTabsPageNumber()
-        subscribeToSearchText()
+        createSubscriptions()
     }
     
     func setTabsPageNumber() {
@@ -52,7 +52,7 @@ class NewsListViewModel: ObservableObject {
 
     }
     
-    private func subscribeToSearchText() {
+    private func createSubscriptions() {
         $searchText
             .removeDuplicates()
             .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
@@ -79,7 +79,6 @@ class NewsListViewModel: ObservableObject {
         
         $selectedTab
             .sink {selectedTab in
-                print(selectedTab)
                 self.getNews(selectedTab: selectedTab)
         }
         .store(in: &cancellables)
