@@ -12,18 +12,22 @@ struct NewsList: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                titleView
-                SearchView(searchText: $viewModel.searchText, isSearching: $viewModel.isSearching)
-                    .padding([.trailing, .leading, .bottom], 13)
-                tabsView
-                ScrollableNewsListView(articles: articles, checkLastCellAction: checkActionForLastCell)
+            ZStack {
+                VStack {
+                    titleView
+                    SearchView(searchText: $viewModel.searchText, isSearching: $viewModel.isSearching)
+                        .padding([.trailing, .leading, .bottom], 13)
+                    tabsView
+                    ScrollableNewsListView(articles: articles, checkLastCellAction: checkActionForLastCell)
+                }
+                .background(Color.background.edgesIgnoringSafeArea(.all))
+                .navigationBarHidden(true)
+                .onAppear {
+                    //viewModel.getNews()
+                }
+                errorView
             }
-            .background(Color.background.edgesIgnoringSafeArea(.all))
-            .navigationBarHidden(true)
-            .onAppear {
-                //viewModel.getNews()
-            }
+            
         }
     }
     
@@ -43,6 +47,15 @@ struct NewsList: View {
                 .padding(.horizontal, 13)
         }
     }
+    
+    @ViewBuilder var errorView: some View {
+        if let error = viewModel.error {
+            AlertView(title: "Oooopss, an error has occured", message: error.localizedDescription) {
+                viewModel.error = nil
+            }
+        }
+    }
+    
     
     var articles: [Article] {
         guard viewModel.searchedArticles.isEmpty || viewModel.searchText.count < 3 else { return viewModel.searchedArticles}

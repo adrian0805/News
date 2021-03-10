@@ -10,7 +10,6 @@ import Combine
 
 enum NewsAPI {
     static let agent = NetworkAgent()
-//    static let baseURL = URL(string: "https://newsapi.org")!
     static let baseURLComponents = URLComponents(string: "https://newsapi.org")
     static let APIKey = "77bdfb46ad214c91b0bc16f459794095"
 }

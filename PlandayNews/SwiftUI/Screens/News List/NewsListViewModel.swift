@@ -14,7 +14,8 @@ class NewsListViewModel: ObservableObject {
     @Published var isSearching = false
     @Published var searchText = ""
     @Published var selectedTab = Tabs.general
-    
+    @Published var error: Error?
+
     var searchPage: Int = 1
     var hasMoreNews = true
     var cancellables = Set<AnyCancellable>()
@@ -33,25 +34,6 @@ class NewsListViewModel: ObservableObject {
             tabsArticles[tab] = []
         }
     }
-
-    func getNews() {
-        guard let page = tabsPageNumber[selectedTab]?.0 else { return}
-         
-        NewsAPI.topHeadlines(page: page, category: selectedTab.rawValue)
-            .receive(on: DispatchQueue.main)
-            .sink { (completion) in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    print(error)
-                }
-            } receiveValue: { [unowned self] news in
-                self.tabsArticles[selectedTab]?.append(contentsOf: news.articles)
-                self.checkNextPageData(articles: news.articles)
-            }
-            .store(in: &cancellables)
-    }
     
     func getNextPageNews(isPaging: Bool) {
         if isPaging {
@@ -63,8 +45,11 @@ class NewsListViewModel: ObservableObject {
             }
         }
         guard let hasMoreNews = tabsPageNumber[selectedTab]?.1,
-              hasMoreNews else { return}
-        isSearching && !searchText.isEmpty ? searchNews(isPaging: isPaging) : getNews()
+              hasMoreNews,
+              let selectedIndex = Tabs.allCases.firstIndex(of: selectedTab) else { return}
+        isSearching && !searchText.isEmpty ? searchNews(isPaging: isPaging) :
+        getNewsForTab(selectedTab: selectedTab, index: selectedIndex)
+
     }
     
     private func subscribeToSearchText() {
@@ -111,32 +96,46 @@ class NewsListViewModel: ObservableObject {
                !downloadedIndexes.contains(index) {
                 print("Donwloaded for index: \(index)")
                 let category = Tabs.allCases[index]
-                getNewsForTab(selectedTab: category, category: category.rawValue, index: index)
+                getNewsForTab(selectedTab: category, index: index)
             }
         }
 
     }
     
-    private func getNewsForTab(selectedTab: Tabs, category: String, index: Int) {
+    private func getNewsForTab(selectedTab: Tabs, index: Int) {
         guard let page = tabsPageNumber[selectedTab]?.0 else { return}
 
-        NewsAPI.topHeadlines(country: "us", page: page, category: category)
-            .sink { (completion) in
+        NewsAPI.topHeadlines(country: "us", page: page, category: selectedTab.rawValue)
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] (completion) in
                 switch completion {
                 case .finished:
                     break
                 case .failure(let error):
                     print(error)
+                    self.error = error
                 }
             } receiveValue: {[unowned self] tabNews in
-                self.tabsArticles[selectedTab] = tabNews.articles
-                self.downloadedIndexes.insert(index)
+                self.addNews(selectedTab: selectedTab, tabNews: tabNews, index: index)
             }
             .store(in: &cancellables)
     }
     
+    private func addNews(selectedTab:Tabs, tabNews: News, index: Int) {
+        guard let isSelectedCategoryEmpty = self.tabsArticles[selectedTab]?.isEmpty else { return }
+        if isSelectedCategoryEmpty {
+            self.tabsArticles[selectedTab] = tabNews.articles
+        } else {
+            self.tabsArticles[selectedTab]?.append(contentsOf: tabNews.articles)
+        }
+        if !self.downloadedIndexes.contains(index) {
+            self.downloadedIndexes.insert(index)
+        }
+        self.checkNextPageData(articles: tabNews.articles)
+    }
     
-    internal func checkNextPageData(articles: [Article]) {
+    
+    func checkNextPageData(articles: [Article]) {
         if articles.count < 20 {
             if  isSearching && !searchText.isEmpty {
                 hasMoreNews = false
@@ -148,6 +147,7 @@ class NewsListViewModel: ObservableObject {
     
     func searchNews(isPaging: Bool = false) {
         NewsAPI.searchNews(searchString: searchText, page: searchPage)
+            .receive(on: DispatchQueue.main)
             .sink { (completion) in
                 switch completion {
                 case .finished:
@@ -155,15 +155,12 @@ class NewsListViewModel: ObservableObject {
                 case .failure(_):
                     break
                 }
-            } receiveValue: { (news) in
-                print(news)
-                DispatchQueue.main.async {
+            } receiveValue: { [unowned self] (news) in
                     if isPaging {
                         self.searchedArticles.append(contentsOf: news.articles)
                     } else {
                         self.searchedArticles = news.articles
                     }
-                }
                 self.checkNextPageData(articles: news.articles)
             }.store(in: &cancellables)
     }
